@@ -59,7 +59,7 @@
   (interactive)
   (setq lh-title (read-from-minibuffer "NT Title:"))
   (setq lh-body (read-from-minibuffer "NT Body:"))
-  (with-temp-buffer (insert (format "{\"ticket\":{\"assigned_user_id\":\"217211\",\"attachments_count\":0,\"closed\":false,\"created_at\":null,\"creator_id\":null,\"importance\":1,\"milestone_due_on\":null,\"milestone_id\":null,\"milestone_order\":0,\"number\":null,\"permalink\":null,\"project_id\":6296,\"raw_data\":null,\"spam\":false,\"state\":\"new\",\"tag\":null,\"title\":\"%s\",\"updated_at\":null,\"user_id\":null,\"version\":null,\"watchers_ids\":[],\"url\":\"http://test.lighthouseapp.com/projects/6296/tickets/\",\"priority\":0,\"original_body\":null,\"latest_body\":null,\"original_body_html\":null,\"state_color\":null,\"body\":\"%s\"}}" lh-title lh-body ))
+  (with-temp-buffer (insert (format "{\"ticket\":{\"assigned_user_id\":\"217211\",\"attachments_count\":0,\"closed\":false,\"created_at\":null,\"creator_id\":null,\"importance\":1,\"milestone_due_on\":null,\"milestone_id\":null,\"milestone_order\":0,\"number\":null,\"permalink\":null,\"project_id\":appid,\"raw_data\":null,\"spam\":false,\"state\":\"new\",\"tag\":null,\"title\":\"%s\",\"updated_at\":null,\"user_id\":null,\"version\":null,\"watchers_ids\":[],\"url\":\"http://test.lighthouseapp.com/projects/appid/tickets/\",\"priority\":0,\"original_body\":null,\"latest_body\":null,\"original_body_html\":null,\"state_color\":null,\"body\":\"%s\"}}" lh-title lh-body ))
                     (write-region (point-min) (point-max) "~/.emacs.d/NT"))
   )
 
@@ -81,8 +81,8 @@
 ;;     (web-http-post
 ;;      (lambda (con header data)
 ;;        (my-web-post-done data))
-;;      :url "http://test.lighthouseapp.com/projects/6296/tickets.json"
-;;      :data `(("json" . "{\"ticket\":{\"assigned_user_id\":null,\"attachments_count\":0,\"closed\":false,\"created_at\":null,\"creator_id\":null,\"importance\":0,\"milestone_due_on\":null,\"milestone_id\":null,\"milestone_order\":0,\"number\":null,\"permalink\":null,\"project_id\":6296,\"raw_data\":null,\"spam\":false,\"state\":null,\"tag\":null,\"title\":\"Test XXX2\",\"updated_at\":null,\"user_id\":null,\"version\":null,\"watchers_ids\":[],\"url\":\"http://test.lighthouseapp.com/projects/6296/tickets/\",\"priority\":0,\"original_body\":null,\"latest_body\":null,\"original_body_html\":null,\"state_color\":null}}"))
+;;      :url "http://test.lighthouseapp.com/projects/appid/tickets.json"
+;;      :data `(("json" . "{\"ticket\":{\"assigned_user_id\":null,\"attachments_count\":0,\"closed\":false,\"created_at\":null,\"creator_id\":null,\"importance\":0,\"milestone_due_on\":null,\"milestone_id\":null,\"milestone_order\":0,\"number\":null,\"permalink\":null,\"project_id\":appid,\"raw_data\":null,\"spam\":false,\"state\":null,\"tag\":null,\"title\":\"Test XXX2\",\"updated_at\":null,\"user_id\":null,\"version\":null,\"watchers_ids\":[],\"url\":\"http://test.lighthouseapp.com/projects/appid/tickets/\",\"priority\":0,\"original_body\":null,\"latest_body\":null,\"original_body_html\":null,\"state_color\":null}}"))
 ;;      :extra-headers heads
 ;;      :mime-type "application/json"
 ;;      )))
@@ -145,7 +145,7 @@
        (setq *TICKETS* (json-read-from-string my-data))
        ;; (with-output-to-temp-buffer "*tickets*" (pp *TICKETS*))))
        ))
-     :url (format "%s" "https://test.lighthouseapp.com/projects/6296/tickets/new.json")
+     :url (format "%s" "https://test.lighthouseapp.com/projects/appid/tickets/new.json")
      :extra-headers data
      ))
 
@@ -241,17 +241,17 @@
 
 (defun get-user-tickets-closed (user)
   (interactive)
-  ;;(https://test.lighthouseapp.com/projects/6296-br/tickets/bins?filter=&q=responsible%3Ame+sort%3Aupdated-+state%3Aresolved+state%3Adeployed
+  ;;(https://test.lighthouseapp.com/projects/appid-br/tickets/bins?filter=&q=responsible%3Ame+sort%3Aupdated-+state%3Aresolved+state%3Adeployed
   (lighthouse-list-tickets "tickets.json" (concat "limit=100&q=responsible:" (format "%s" user) "+sort%3Aupdated-+state%3Aresolved+state%3Adeployed")))
 
 (defun get-pending-operations-tickets ()
   (interactive)
   (lighthouse-list-tickets "tickets.json" "limit=100&q=milestone%3A*operations+sort%3Apriority+state%3Apending-review+&filter"))
-;;https://test.lighthouseapp.com/projects/6296-br/tickets?q=milestone%3A*operations+sort%3Apriority+state%3Apending-review+&filter=
+;;https://test.lighthouseapp.com/projects/appid-br/tickets?q=milestone%3A*operations+sort%3Apriority+state%3Apending-review+&filter=
 
 (defun get-new-ticket ()
   (interactive)
-  (lighthouse-list-tickets2 "projects/6296/tickets/new.json" "")
+  (lighthouse-list-tickets2 "projects/appid/tickets/new.json" "")
 )
 
 (global-set-key [f7] 'get-pending-operations-tickets)
